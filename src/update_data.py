@@ -31,7 +31,7 @@ def update_data():
         (lambda x_, y_: x_ * x_ - y_ * y_, 0),
         (lambda x_, y_: x_ * x_ + y_ * y_, 0),
     )
-    ts = list(product(np.arange(0, 3 + 1, 1), repeat=2))
+    ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
     diffeos = list()
     for t in ts:
         diffeos.append(get_diffeo(t))
