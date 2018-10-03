@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import numpy as np
-import hashlib
 import json
 from sympy import *
 from itertools import product
