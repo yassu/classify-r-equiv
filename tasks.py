@@ -6,6 +6,7 @@ from invoke import task
 @task
 def update(ctx):
     """ 入力のデータを作成/更新する """
+    ctx.run('python {}'.format('src/update_data.py'))
 
 
 @task
