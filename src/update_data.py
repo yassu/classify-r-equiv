@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import numpy as np
+import hashlib
 from sympy import *
 from itertools import product
 
 x, y = symbols("x y")
-MIN_X, MAX_X, STEP_X = -100, 100, 0.1
-MIN_Y, MAX_Y, STEP_Y = -100, 100, 0.1
+MIN_VAR, MAX_VAR, STEP_VAR = -100, 100, 0.1
+
 
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
+
 
 def to(from_, to_, step):
     now = from_
@@ -17,28 +20,39 @@ def to(from_, to_, step):
         now += step
     yield now
 
+
+def get_diffeo(t):
+        return t[0] * x + t[1] * y
+
+
 def update_data():
     seed_functions = (
         (lambda x_, y_: x_ * x_ - y_ * y_, 0),
         (lambda x_, y_: x_ * x_ + y_ * y_, 0),
     )
-    functions = []
-    ran = list(range(0, 3 + 1))
-    l = list(product(ran, repeat=2))
+    ts = list(product(np.arange(0, 3 + 1, 1), repeat=2))
+    diffeos = list()
+    for t in ts:
+        diffeos.append(get_diffeo(t))
 
-    for a, b in l:
-        phi1 = lambda x_, y_: a * x_ + b * y_
-        for c, d in l:
-            if (a * d - b * c == 0):
-                continue
-            phi2 = lambda x_, y_: c * x_ + d * y_
-            for function in seed_functions:
-                func = function[0]
-                updated_func = expand(func(phi1(x, y), phi2(x, y)))
-                functions.append((updated_func, function[1]))
+    datas = []
+    for function in seed_functions:
+        func = function[0]
+        for phi1, t1 in zip(diffeos, ts):
+            for phi2, t2 in zip(diffeos, ts):
+                if (t1[0] * t2[1] - t1[1] * t2[0] == 0):
+                    continue
+                updated_func = expand(func(phi1, phi2))
 
-    for j in range(10):
-        print(functions[j])
+                datas.append({
+                    "seed_function": str(func(x, y)),
+                    "phi1": str(phi1),
+                    "phi2": str(phi2),
+                    "updated_function": str(updated_func)
+                })
+
+    for data in datas:
+        print(data)
 
 
 def main():
