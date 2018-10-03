@@ -23,6 +23,10 @@ def update_data():
     seed_functions = (
         (lambda x_, y_: x_ * x_ - y_ * y_, 0),
         (lambda x_, y_: x_ * x_ + y_ * y_, 0),
+        (lambda x_, y_: x_ * x_ * x_ - x_ * y_ * y_, 3),
+        (lambda x_, y_: x_ * x_ * x_ + y_ * y_ * y_, 3),
+        (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4),
+        (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4),
     )
     print('Compute ts')
     ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
