@@ -21,12 +21,13 @@ def get_diffeo(t):
 
 def update_data():
     seed_functions = (
-        (lambda x_, y_: x_ * x_ - y_ * y_, 0),
-        (lambda x_, y_: x_ * x_ + y_ * y_, 0),
-        (lambda x_, y_: x_ * x_ * x_ - x_ * y_ * y_, 3),
-        (lambda x_, y_: x_ * x_ * x_ + y_ * y_ * y_, 3),
-        (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4),
-        (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4),
+        # (function, r-codimension, function-id)
+        (lambda x_, y_: x_ * x_ - y_ * y_, 0, 0),
+        (lambda x_, y_: x_ * x_ + y_ * y_, 0, 1),
+        (lambda x_, y_: x_ * x_ * x_ - x_ * y_ * y_, 3, 2),
+        (lambda x_, y_: x_ * x_ * x_ + y_ * y_ * y_, 3, 3),
+        (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4, 4),
+        (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4, 5),
     )
     print('Compute ts')
     ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
@@ -53,6 +54,7 @@ def update_data():
                     updated_func = expand(func(phi1, phi2))
                     datas.append({
                         "seed_function": str(func(x, y)),
+                        "function_type": function[2],
                         "phi1": str(phi1),
                         "phi2": str(phi2),
                         "updated_function": str(updated_func)
