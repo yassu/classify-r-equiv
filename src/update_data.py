@@ -7,20 +7,12 @@ from sympy import *
 from itertools import product
 
 x, y = symbols("x y")
-MIN_VAR, MAX_VAR, STEP_VAR = 0, 4, 1
+MIN_VAR, MAX_VAR, STEP_VAR = -100, 100, 0.1
 JSON_FILENAME = 'assets/function_datas.json'
 
 
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
-
-
-def to(from_, to_, step):
-    now = from_
-    while (now < to_ or near_eq(now, to_)):
-        yield now
-        now += step
-    yield now
 
 
 def get_diffeo(t):
