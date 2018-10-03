@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import hashlib
+import json
 from sympy import *
 from itertools import product
 
 x, y = symbols("x y")
 MIN_VAR, MAX_VAR, STEP_VAR = -100, 100, 0.1
+JSON_FILENAME = 'assets/function_datas.json'
 
 
 def near_eq(f1, f2):
@@ -51,8 +53,8 @@ def update_data():
                     "updated_function": str(updated_func)
                 })
 
-    for data in datas:
-        print(data)
+    with open(JSON_FILENAME, 'w') as f:
+        json.dump(datas, f, indent=4)
 
 
 def main():
