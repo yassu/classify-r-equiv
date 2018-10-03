@@ -57,7 +57,7 @@ def update_data():
                         "function_type": function[2],
                         "t1": t1,
                         "t2": t2,
-                        "updated_function": str(updated_func)
+                        "function": str(updated_func)
                     })
                     pbar.update(1)
     print('Finish to compute datas')
