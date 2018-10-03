@@ -8,7 +8,7 @@ from itertools import product
 
 x, y = symbols("x y")
 MIN_VAR, MAX_VAR, STEP_VAR = -100, 100, 0.1
-JSON_FILENAME = 'assets/function_datas.json'
+JSON_FILENAME = 'assets/input_function_datas.json'
 
 
 def near_eq(f1, f2):
