@@ -55,8 +55,8 @@ def update_data():
                     datas.append({
                         "seed_function": str(func(x, y)),
                         "function_type": function[2],
-                        "phi1": str(phi1),
-                        "phi2": str(phi2),
+                        "t1": t1,
+                        "t2": t2,
                         "updated_function": str(updated_func)
                     })
                     pbar.update(1)
