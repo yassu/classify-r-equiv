@@ -8,7 +8,8 @@ import random
 from itertools import product
 
 x, y = symbols("x y")
-MIN_VAR, MAX_VAR, STEP_VAR = 0, 3, 1
+MAX_DEG = 10
+MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.1
 JSON_FILENAME = 'assets/input_function_datas.json'
 
 class MyEncoder(json.JSONEncoder):
@@ -22,7 +23,6 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
-
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
@@ -31,9 +31,9 @@ def get_diffeo(t):
         return t[0] * x + t[1] * y
 
 def get_function_infos(seed_functions, diffeosWithTs):
-    number_of_samples = 2000000
+    number_of_samples = 10 ** 5
     yielded_keys = list()
-    for _ in range(number_of_samples):
+    for i in range(number_of_samples):
         seed_function = random.choice(seed_functions)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
@@ -56,6 +56,8 @@ def update_data():
         (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4, 4),
         (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4, 5),
     )
+    coeff_keys = [x ** (k - i) * y ** i
+        for k in range(1, MAX_DEG + 1) for i in range(k + 1)]
     print('Compute ts')
     ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
     print('Finish to compute ts')
@@ -80,7 +82,10 @@ def update_data():
                 "function_type": function[2],
                 "t1": t1,
                 "t2": t2,
-                "function": str(updated_func)
+                "function": str(updated_func),
+                "function_coeffs": [
+                    float(updated_func.coeff(coeff_key).subs([(x, 0), (y, 0)]))
+                    for coeff_key in coeff_keys],
             })
             pbar.update(1)
     print('Finish to compute datas')
