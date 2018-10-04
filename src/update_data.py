@@ -12,6 +12,7 @@ MAX_DEG = 10
 MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.1
 JSON_FILENAME = 'assets/input_function_datas.json'
 
+
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -23,6 +24,7 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
+
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
@@ -30,8 +32,9 @@ def near_eq(f1, f2):
 def get_diffeo(t):
         return t[0] * x + t[1] * y
 
+
 def get_function_infos(seed_functions, diffeosWithTs):
-    number_of_samples = 10 ** 5
+    number_of_samples = 10 ** 6
     yielded_keys = list()
     for i in range(number_of_samples):
         seed_function = random.choice(seed_functions)
@@ -56,7 +59,8 @@ def update_data():
         (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4, 4),
         (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4, 5),
     )
-    coeff_keys = [x ** (k - i) * y ** i
+    coeff_keys = [
+        x ** (k - i) * y ** i
         for k in range(1, MAX_DEG + 1) for i in range(k + 1)]
     print('Compute ts')
     ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
@@ -71,8 +75,8 @@ def update_data():
 
     print('Compute datas')
     datas = []
-    function_infos = list(get_function_infos(seed_functions,
-        list(zip(diffeos, ts))))
+    function_infos = list(
+        get_function_infos(seed_functions, list(zip(diffeos, ts))))
     with tqdm(total=len(function_infos)) as pbar:
         for function, (phi1, t1), (phi2, t2) in function_infos:
             func = function[0]
