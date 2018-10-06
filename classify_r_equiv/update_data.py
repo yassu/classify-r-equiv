@@ -8,7 +8,6 @@ import random
 from itertools import product
 
 x, y = symbols("x y")
-NUMBER_OF_SAMPLES = 10 ** 6
 
 
 class MyEncoder(json.JSONEncoder):
@@ -31,9 +30,9 @@ def get_diffeo(t):
         return t[0] * x + t[1] * y
 
 
-def get_function_infos(seed_functions, diffeosWithTs):
+def get_function_infos(seed_functions, diffeosWithTs, number_of_samples=None):
     yielded_keys = list()
-    for i in range(NUMBER_OF_SAMPLES):
+    for i in range(number_of_samples):
         seed_function = random.choice(seed_functions)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
@@ -51,7 +50,8 @@ def update_data(
         min_var=None,
         max_var=None,
         step_var=None,
-        json_filename=None,):
+        json_filename=None,
+        number_of_samples=None,):
     seed_functions = (
         # (function, r-codimension, function-id)
         (lambda x_, y_: x_ * x_ - y_ * y_, 0, 0),
@@ -78,7 +78,10 @@ def update_data(
     print('Compute datas')
     datas = []
     function_infos = list(
-        get_function_infos(seed_functions, list(zip(diffeos, ts))))
+        get_function_infos(
+            seed_functions,
+            list(zip(diffeos, ts)),
+            number_of_samples))
     with tqdm(total=len(function_infos)) as pbar:
         for function, (phi1, t1), (phi2, t2) in function_infos:
             func = function[0]
@@ -105,13 +108,15 @@ def main(
     min_var=None,
     max_var=None,
     step_var=None,
-    json_filename=None,):
+    json_filename=None,
+    number_of_samples=None,):
     update_data(
         max_deg=max_deg,
         min_var=min_var,
         max_var=max_var,
         step_var=step_var,
-        json_filename=json_filename)
+        number_of_samples=number_of_samples,
+        json_filename=json_filename,)
 
 
 if __name__ == '__main__':
