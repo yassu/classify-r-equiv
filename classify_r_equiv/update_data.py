@@ -8,8 +8,7 @@ import random
 from itertools import product
 
 x, y = symbols("x y")
-MAX_DEG = 10
-MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.1
+MIN_VAR, MAX_VAR, STEP_VAR = 0, 3, 1
 JSON_FILENAME = 'assets/input_function_datas.json'
 
 
@@ -49,7 +48,7 @@ def get_function_infos(seed_functions, diffeosWithTs):
         yield (seed_function, (phi1, t1), (phi2, t2))
 
 
-def update_data():
+def update_data(max_deg=None):
     seed_functions = (
         # (function, r-codimension, function-id)
         (lambda x_, y_: x_ * x_ - y_ * y_, 0, 0),
@@ -61,7 +60,7 @@ def update_data():
     )
     coeff_keys = [
         x ** (k - i) * y ** i
-        for k in range(1, MAX_DEG + 1) for i in range(k + 1)]
+        for k in range(1, max_deg + 1) for i in range(k + 1)]
     print('Compute ts')
     ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
     print('Finish to compute ts')
@@ -98,8 +97,8 @@ def update_data():
         json.dump(datas, f, indent=4, cls=MyEncoder)
 
 
-def main():
-    update_data()
+def main(max_deg=None):
+    update_data(max_deg=max_deg)
 
 
 if __name__ == '__main__':

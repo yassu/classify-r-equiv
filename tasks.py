@@ -4,10 +4,13 @@ from invoke import task
 from classify_r_equiv import update_data
 
 
+DEFAULT_MAX_DEG = 10
+
+
 @task
-def update(ctx):
+def update(ctx, max_deg=DEFAULT_MAX_DEG):
     """ 入力のデータを作成/更新する """
-    update_data.main()
+    update_data.main(max_deg=int(max_deg))
 
 
 @task
