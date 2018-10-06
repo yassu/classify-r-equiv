@@ -4,8 +4,8 @@ from invoke import task
 from classify_r_equiv import update_data
 
 
-MAX_DEG = 3
-MIN_VAR, MAX_VAR, STEP_VAR = 0, 3, 1
+MAX_DEG = 10
+MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.1
 JSON_FILENAME = 'assets/input_function_datas.json'
 NUMBER_OF_SAMPLES = 10 ** 6
 
