@@ -11,7 +11,14 @@ NUMBER_OF_SAMPLES = 10 ** 6
 
 
 @task(
-    help={'max_deg': 'consider degree of max <= max_deg'}
+    help={
+        'json-filename': 'output data to json-filename',
+        'number-of-samples': 'number of made samples',
+        'min-var': 'consider coefficient of function >= min-var',
+        'max-var': 'consider coefficient of function <= max-var',
+        'max-deg': 'consider degree of max <= max-deg',
+        'step-var': 'consider list from min-var to max-var by step-var step',
+        }
 )
 def update(
         ctx,
