@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from invoke import task
+from classify_r_equiv import update_data
 
 
 @task
 def update(ctx):
     """ 入力のデータを作成/更新する """
-    ctx.run('python {}'.format('src/update_data.py'))
+    update_data.main()
 
 
 @task
