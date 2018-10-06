@@ -4,13 +4,28 @@ from invoke import task
 from classify_r_equiv import update_data
 
 
-DEFAULT_MAX_DEG = 10
+MAX_DEG = 3
+MIN_VAR, MAX_VAR, STEP_VAR = 0, 3, 1
+JSON_FILENAME = 'assets/input_function_datas.json'
 
 
-@task
-def update(ctx, max_deg=DEFAULT_MAX_DEG):
+@task(
+    help={'max_deg': 'consider degree of max <= max_deg'}
+)
+def update(
+        ctx,
+        max_deg=MAX_DEG,
+        min_var=MIN_VAR,
+        max_var=MAX_DEG,
+        step_var=STEP_VAR,
+        json_filename=JSON_FILENAME,):
     """ 入力のデータを作成/更新する """
-    update_data.main(max_deg=int(max_deg))
+    update_data.main(
+        max_deg=int(max_deg),
+        min_var=float(min_var),
+        max_var=float(max_var),
+        step_var=float(step_var),
+        json_filename=json_filename,)
 
 
 @task

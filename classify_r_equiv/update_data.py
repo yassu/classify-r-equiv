@@ -8,8 +8,7 @@ import random
 from itertools import product
 
 x, y = symbols("x y")
-MIN_VAR, MAX_VAR, STEP_VAR = 0, 3, 1
-JSON_FILENAME = 'assets/input_function_datas.json'
+NUMBER_OF_SAMPLES = 10 ** 6
 
 
 class MyEncoder(json.JSONEncoder):
@@ -33,9 +32,8 @@ def get_diffeo(t):
 
 
 def get_function_infos(seed_functions, diffeosWithTs):
-    number_of_samples = 10 ** 6
     yielded_keys = list()
-    for i in range(number_of_samples):
+    for i in range(NUMBER_OF_SAMPLES):
         seed_function = random.choice(seed_functions)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
@@ -48,7 +46,12 @@ def get_function_infos(seed_functions, diffeosWithTs):
         yield (seed_function, (phi1, t1), (phi2, t2))
 
 
-def update_data(max_deg=None):
+def update_data(
+        max_deg=None,
+        min_var=None,
+        max_var=None,
+        step_var=None,
+        json_filename=None,):
     seed_functions = (
         # (function, r-codimension, function-id)
         (lambda x_, y_: x_ * x_ - y_ * y_, 0, 0),
@@ -62,7 +65,7 @@ def update_data(max_deg=None):
         x ** (k - i) * y ** i
         for k in range(1, max_deg + 1) for i in range(k + 1)]
     print('Compute ts')
-    ts = list(product(np.arange(MIN_VAR, MAX_VAR, STEP_VAR), repeat=2))
+    ts = list(product(np.arange(min_var, max_var, step_var), repeat=2))
     print('Finish to compute ts')
     print('Compute diffeos')
     diffeos = list()
@@ -93,12 +96,22 @@ def update_data(max_deg=None):
             pbar.update(1)
     print('Finish to compute datas')
 
-    with open(JSON_FILENAME, 'w') as f:
+    with open(json_filename, 'w') as f:
         json.dump(datas, f, indent=4, cls=MyEncoder)
 
 
-def main(max_deg=None):
-    update_data(max_deg=max_deg)
+def main(
+    max_deg=None,
+    min_var=None,
+    max_var=None,
+    step_var=None,
+    json_filename=None,):
+    update_data(
+        max_deg=max_deg,
+        min_var=min_var,
+        max_var=max_var,
+        step_var=step_var,
+        json_filename=json_filename)
 
 
 if __name__ == '__main__':
