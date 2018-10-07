@@ -5,7 +5,7 @@ from classify_r_equiv import update_data
 
 
 MAX_DEG = 10
-MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.1
+MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.01
 JSON_FILENAME = 'assets/input_function_datas.json'
 NUMBER_OF_SAMPLES = 10 ** 6
 
