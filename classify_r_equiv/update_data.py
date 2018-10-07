@@ -85,12 +85,11 @@ def update_data(
 
     print('Compute datas')
     datas = []
-    function_infos = list(
-        get_function_infos(
+    function_infos = get_function_infos(
             seed_functions,
             list(zip(diffeos, ts)),
-            number_of_samples))
-    with tqdm(total=len(function_infos)) as pbar:
+            number_of_samples)
+    with tqdm(total=number_of_samples) as pbar:
         for function, (phi1, t1), (phi2, t2) in function_infos:
             func = function[0]
             updated_func = expand(func(phi1, phi2))

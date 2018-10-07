@@ -24,7 +24,7 @@ def update(
         ctx,
         max_deg=MAX_DEG,
         min_var=MIN_VAR,
-        max_var=MAX_DEG,
+        max_var=MAX_VAR,
         step_var=STEP_VAR,
         number_of_samples=NUMBER_OF_SAMPLES,
         json_filename=JSON_FILENAME,):
