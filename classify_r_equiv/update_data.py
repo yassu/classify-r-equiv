@@ -25,6 +25,15 @@ class MyEncoder(json.JSONEncoder):
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
+def get_ts(numbers, number_of_samples):
+    t1s = np.array(numbers)
+    np.random.shuffle(t1s)
+    t2s = np.array(numbers)
+    np.random.shuffle(t2s)
+    return zip(
+            t1s[:number_of_samples],
+            t2s[:number_of_samples]
+        )
 
 def get_diffeo(t):
         return t[0] * x + t[1] * y
@@ -64,11 +73,10 @@ def update_data(
     coeff_keys = [
         x ** (k - i) * y ** i
         for k in range(1, max_deg + 1) for i in range(k + 1)]
-    print('Compute ts')
-    ts = list(product(np.arange(min_var, max_var, step_var), repeat=2))
-    print('Finish to compute ts')
     print('Compute diffeos')
+    numbers = np.arange(min_var, max_var, step_var)
     diffeos = list()
+    ts = list(get_ts(numbers, number_of_samples))
     with tqdm(total=len(ts)) as pbar:
         for t in ts:
             diffeos.append(get_diffeo(t))
