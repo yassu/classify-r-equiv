@@ -46,24 +46,21 @@ def execute(X_train, X_test, Y_train, Y_test):
     # 入力層 - 隠れ層
     W0 = tf.Variable(tf.truncated_normal([n_in, n_hidden], stddev=0.01))
     b0 = tf.Variable(tf.zeros([n_hidden]))
-    alpha0 = tf.Variable(tf.zeros([n_hidden]))
-    h0 = prelu(tf.matmul(x, W0) + b0, alpha0)
+    h0 = tf.nn.tanh(tf.matmul(x, W0) + b0)
 
     # 隠れ層 - 隠れ層
     W1 = tf.Variable(tf.truncated_normal([n_hidden, n_hidden], stddev=0.01))
     b1 = tf.Variable(tf.zeros([n_hidden]))
-    alpha1 = tf.Variable(tf.zeros([n_hidden]))
-    h1 = prelu(tf.matmul(h0, W1) + b1, alpha1)
+    h1 = tf.nn.tanh(tf.matmul(h0, W1) + b1)
 
     W2 = tf.Variable(tf.truncated_normal([n_hidden, n_hidden], stddev=0.01))
     b2 = tf.Variable(tf.zeros([n_hidden]))
-    alpha2 = tf.Variable(tf.zeros([n_hidden]))
-    h2 = prelu(tf.matmul(h1, W2) + b2, alpha2)
+    h2 = tf.nn.tanh(tf.matmul(h1, W2) + b2)
 
     W3 = tf.Variable(tf.truncated_normal([n_hidden, n_hidden], stddev=0.01))
     b3 = tf.Variable(tf.zeros([n_hidden]))
     alpha3 = tf.Variable(tf.zeros([n_hidden]))
-    h3 = prelu(tf.matmul(h2, W3) + b3, alpha3)
+    h3 = tf.nn.tanh(tf.matmul(h2, W3) + b3)
 
     # 隠れ層 - 出力層
     W4 = tf.Variable(tf.truncated_normal([n_hidden, n_out], stddev=0.01))
@@ -87,18 +84,21 @@ def execute(X_train, X_test, Y_train, Y_test):
     sess.run(init)
 
     with tqdm(total=epochs) as pbar:
-        n_batches = len(X_train)
+        n_batches = len(X_train) // batch_size
         for epoch in range(epochs):
             X_, Y_ = shuffle(X_train, Y_train)
+            wout = None
 
             for i in range(n_batches):
                 start = i * batch_size
                 end = start + batch_size
 
-                sess.run(train_step, feed_dict={
+                wout, _ = sess.run([W2, train_step], feed_dict={
                     x: X_[start:end],
                     t: Y_[start:end]
                 })
+            if (epoch % 10 == 0):
+                print(wout)
 
             # 訓練データに対する学習の進み具合を出力
             loss = cross_entropy.eval(session=sess, feed_dict={
