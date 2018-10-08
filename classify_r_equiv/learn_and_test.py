@@ -90,21 +90,19 @@ def execute(X_train, X_test, Y_train, Y_test):
     # とする
     n_batches = len(X_train)
     for epoch in range(epochs):
-        X_, Y_ = shuffle(X_train, Y_train)
-
         sess.run(train_step, feed_dict={
-            x: X_[:n_batches],
-            t: Y_[:n_batches]
+            x: X_train,
+            t: Y_train
         })
 
         # 訓練データに対する学習の進み具合を出力
         loss = cross_entropy.eval(session=sess, feed_dict={
-            x: X_,
-            t: Y_
+            x: X_train,
+            t: Y_train
         })
         acc = accuracy.eval(session=sess, feed_dict={
-            x: X_,
-            t: Y_
+            x: X_train,
+            t: Y_train
         })
         print('epoch:', f'{epoch}/{epochs}', ' loss:', loss, ' accuracy:', acc)
 
