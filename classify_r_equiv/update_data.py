@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import json
+from classify_r_equiv.const import SEED_FUNCTIONS
 from tqdm import tqdm
 from sympy import *
 import random
@@ -39,10 +40,10 @@ def get_diffeo(t):
         return t[0] * x + t[1] * y
 
 
-def get_function_infos(seed_functions, diffeosWithTs, number_of_samples=None):
+def get_function_infos(diffeosWithTs, number_of_samples=None):
     yielded_keys = list()
     for i in range(number_of_samples):
-        seed_function = random.choice(seed_functions)
+        seed_function = random.choice(SEED_FUNCTIONS)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
         if (t1[0] * t2[1] - t1[1] * t2[0] == 0):
@@ -61,15 +62,6 @@ def update_data(
         step_var=None,
         json_filename=None,
         number_of_samples=None,):
-    seed_functions = (
-        # (function, r-codimension, function-id)
-        (lambda x_, y_: x_ * x_ - y_ * y_, 0, 0),
-        (lambda x_, y_: x_ * x_ + y_ * y_, 0, 1),
-        (lambda x_, y_: x_ * x_ * x_ - x_ * y_ * y_, 3, 2),
-        (lambda x_, y_: x_ * x_ * x_ + y_ * y_ * y_, 3, 3),
-        (lambda x_, y_: x_ * x_ * y_ + y_ * y_ * y_ * y_, 4, 4),
-        (lambda x_, y_: - x_ * x_ * y_ - y_ * y_ * y_ * y_, 4, 5),
-    )
     coeff_keys = [
         x ** (k - i) * y ** i
         for k in range(1, max_deg + 1) for i in range(k + 1)]
@@ -86,7 +78,6 @@ def update_data(
     print('Compute datas')
     datas = []
     function_infos = get_function_infos(
-            seed_functions,
             list(zip(diffeos, ts)),
             number_of_samples)
     with tqdm(total=number_of_samples) as pbar:
