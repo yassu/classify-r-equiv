@@ -16,14 +16,18 @@ def load_from_json(json_filename, train_size):
     print('Start to load json file')
     with open(json_filename) as f:
         json_datas = json.load(f)
+    print(len(json_datas))
     print('Finish to load json file')
 
     print('Start to compute data')
     xs = []
     ys = np.array([], dtype=np.int64)
-    for json_data in json_datas[:10]:
-        xs.append(np.array(json_data['function_coeffs']))
-        ys = np.append(ys, json_data['function_type'])
+    number_of_datas = len(json_datas)
+    with tqdm(total=number_of_datas) as pbar:
+        for json_data in json_datas:
+            xs.append(np.array(json_data['function_coeffs']))
+            ys = np.append(ys, json_data['function_type'])
+            pbar.update(1)
     xs = np.asarray(xs)
     ys = np.eye(len(SEED_FUNCTIONS))[ys.astype(int)]
     print('Finish to compute data')
@@ -76,41 +80,33 @@ def execute(X_train, X_test, Y_train, Y_test):
     '''
     モデル学習
     '''
-    epochs = 50
-    batch_size = 200
+    epochs = 700
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
     sess.run(init)
 
-    with tqdm(total=epochs) as pbar:
-        n_batches = len(X_train) // batch_size
-        for epoch in range(epochs):
-            X_, Y_ = shuffle(X_train, Y_train)
-            wout = None
+    # TODO: n_batchesの定義を消す. 合わせて X_ = X_train, Y_=Y_train
+    # とする
+    n_batches = len(X_train)
+    for epoch in range(epochs):
+        X_, Y_ = shuffle(X_train, Y_train)
 
-            for i in range(n_batches):
-                start = i * batch_size
-                end = start + batch_size
+        sess.run(train_step, feed_dict={
+            x: X_[:n_batches],
+            t: Y_[:n_batches]
+        })
 
-                wout, _ = sess.run([W2, train_step], feed_dict={
-                    x: X_[start:end],
-                    t: Y_[start:end]
-                })
-            if (epoch % 10 == 0):
-                print(wout)
-
-            # 訓練データに対する学習の進み具合を出力
-            loss = cross_entropy.eval(session=sess, feed_dict={
-                x: X_,
-                t: Y_
-            })
-            acc = accuracy.eval(session=sess, feed_dict={
-                x: X_,
-                t: Y_
-            })
-            print('epoch:', epoch, ' loss:', loss, ' accuracy:', acc)
-            pbar.update(1)
+        # 訓練データに対する学習の進み具合を出力
+        loss = cross_entropy.eval(session=sess, feed_dict={
+            x: X_,
+            t: Y_
+        })
+        acc = accuracy.eval(session=sess, feed_dict={
+            x: X_,
+            t: Y_
+        })
+        print('epoch:', f'{epoch}/{epochs}', ' loss:', loss, ' accuracy:', acc)
 
     '''
     予測精度の評価
@@ -128,4 +124,3 @@ def main():
     X_train, X_test, Y_train, Y_test =\
         load_from_json(json_filename=json_filename, train_size=0.8)
     execute(X_train, X_test, Y_train, Y_test)
-    # print(X_train[:10])
