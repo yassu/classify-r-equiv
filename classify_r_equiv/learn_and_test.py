@@ -118,7 +118,6 @@ def execute(X_train, X_test, Y_train, Y_test):
 
 def main():
     json_filename = 'assets/input_function_datas.json'
-    train_size=0.9
     X_train, X_test, Y_train, Y_test =\
         load_from_json(json_filename=json_filename, train_size=0.8)
     execute(X_train, X_test, Y_train, Y_test)
