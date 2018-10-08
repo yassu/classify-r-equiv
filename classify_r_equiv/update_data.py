@@ -124,7 +124,3 @@ def main(
         step_var=step_var,
         number_of_samples=number_of_samples,
         json_filename=json_filename,)
-
-
-if __name__ == '__main__':
-    main()
