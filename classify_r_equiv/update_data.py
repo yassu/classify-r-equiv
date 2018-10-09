@@ -45,7 +45,8 @@ def get_diffeo(t):
 
 def get_function_infos(diffeosWithTs, number_of_samples):
     yielded_keys = list()
-    for i in range(number_of_samples):
+    cnt = 0
+    while True:
         seed_function = random.choice(SEED_FUNCTIONS)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
@@ -56,6 +57,10 @@ def get_function_infos(diffeosWithTs, number_of_samples):
             continue
         yielded_keys.append(key)
         yield (seed_function, (phi1, t1), (phi2, t2))
+
+        cnt += 1
+        if (cnt == number_of_samples):
+            return
 
 
 def update_data(
