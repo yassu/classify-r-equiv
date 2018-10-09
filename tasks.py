@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from invoke import task
-from classify_r_equiv import update_data
+from classify_r_equiv import (
+    update_data as _update_data,
+    learn_and_test as _learn_and_test)
 
 
 MAX_DEG = 10
@@ -29,7 +31,7 @@ def update(
         number_of_samples=NUMBER_OF_SAMPLES,
         json_filename=JSON_FILENAME,):
     """ 入力のデータを作成/更新する """
-    update_data.main(
+    _update_data.main(
         max_deg=int(max_deg),
         min_var=float(min_var),
         max_var=float(max_var),
@@ -39,8 +41,9 @@ def update(
 
 
 @task
-def learning(ctx):
+def learn_and_test(ctx):
     """ 学習する """
+    _learn_and_test.main()
 
 
 @task

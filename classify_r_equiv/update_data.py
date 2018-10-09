@@ -27,22 +27,26 @@ def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
 def get_ts(numbers, number_of_samples):
-    t1s = np.array(numbers)
-    np.random.shuffle(t1s)
-    t2s = np.array(numbers)
-    np.random.shuffle(t2s)
-    return zip(
-            t1s[:number_of_samples],
-            t2s[:number_of_samples]
-        )
+    tmat = list()
+    for i in range(14):
+        ts = np.array(numbers)
+        np.random.shuffle(ts)
+        tmat.append(ts)
+    return zip(*tmat)
 
 def get_diffeo(t):
-        return t[0] * x + t[1] * y
+        return t[0] * x + t[1] * y + (
+            t[2] * x * x + t[3] * x * y + t[4] * y * y +
+            t[5] * x ** 3 + t[6] * x ** 2 * y + t[7] * x * y ** 2
+                + t[8] * y ** 3 +
+            t[9] * x ** 4 + t[10] * x ** 3 * y + t[11] * x ** 2 * y ** 2 +
+                t[12] * x * y ** 3 + t[13] * y ** 4)
 
 
-def get_function_infos(diffeosWithTs, number_of_samples=None):
+def get_function_infos(diffeosWithTs, number_of_samples):
     yielded_keys = list()
-    for i in range(number_of_samples):
+    cnt = 0
+    while True:
         seed_function = random.choice(SEED_FUNCTIONS)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
@@ -54,14 +58,18 @@ def get_function_infos(diffeosWithTs, number_of_samples=None):
         yielded_keys.append(key)
         yield (seed_function, (phi1, t1), (phi2, t2))
 
+        cnt += 1
+        if (cnt == number_of_samples):
+            return
+
 
 def update_data(
-        max_deg=None,
-        min_var=None,
-        max_var=None,
-        step_var=None,
-        json_filename=None,
-        number_of_samples=None,):
+        max_deg,
+        min_var,
+        max_var,
+        step_var,
+        json_filename,
+        number_of_samples,):
     coeff_keys = [
         x ** (k - i) * y ** i
         for k in range(1, max_deg + 1) for i in range(k + 1)]
@@ -102,12 +110,12 @@ def update_data(
 
 
 def main(
-    max_deg=None,
-    min_var=None,
-    max_var=None,
-    step_var=None,
-    json_filename=None,
-    number_of_samples=None,):
+    max_deg,
+    min_var,
+    max_var,
+    step_var,
+    json_filename,
+    number_of_samples,):
     update_data(
         max_deg=max_deg,
         min_var=min_var,
