@@ -43,7 +43,7 @@ def get_diffeo(t):
                 t[12] * x * y ** 3 + t[13] * y ** 4)
 
 
-def get_function_infos(diffeosWithTs, number_of_samples=None):
+def get_function_infos(diffeosWithTs, number_of_samples):
     yielded_keys = list()
     for i in range(number_of_samples):
         seed_function = random.choice(SEED_FUNCTIONS)
@@ -59,12 +59,12 @@ def get_function_infos(diffeosWithTs, number_of_samples=None):
 
 
 def update_data(
-        max_deg=None,
-        min_var=None,
-        max_var=None,
-        step_var=None,
-        json_filename=None,
-        number_of_samples=None,):
+        max_deg,
+        min_var,
+        max_var,
+        step_var,
+        json_filename,
+        number_of_samples,):
     coeff_keys = [
         x ** (k - i) * y ** i
         for k in range(1, max_deg + 1) for i in range(k + 1)]
@@ -105,12 +105,12 @@ def update_data(
 
 
 def main(
-    max_deg=None,
-    min_var=None,
-    max_var=None,
-    step_var=None,
-    json_filename=None,
-    number_of_samples=None,):
+    max_deg,
+    min_var,
+    max_var,
+    step_var,
+    json_filename,
+    number_of_samples,):
     update_data(
         max_deg=max_deg,
         min_var=min_var,
