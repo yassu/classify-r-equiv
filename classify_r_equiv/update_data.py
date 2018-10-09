@@ -27,17 +27,20 @@ def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
 def get_ts(numbers, number_of_samples):
-    t1s = np.array(numbers)
-    np.random.shuffle(t1s)
-    t2s = np.array(numbers)
-    np.random.shuffle(t2s)
-    return zip(
-            t1s[:number_of_samples],
-            t2s[:number_of_samples]
-        )
+    tmat = list()
+    for i in range(14):
+        ts = np.array(numbers)
+        np.random.shuffle(ts)
+        tmat.append(ts)
+    return zip(*tmat)
 
 def get_diffeo(t):
-        return t[0] * x + t[1] * y
+        return t[0] * x + t[1] * y + (
+            t[2] * x * x + t[3] * x * y + t[4] * y * y +
+            t[5] * x ** 3 + t[6] * x ** 2 * y + t[7] * x * y ** 2
+                + t[8] * y ** 3 +
+            t[9] * x ** 4 + t[10] * x ** 3 * y + t[11] * x ** 2 * y ** 2 +
+                t[12] * x * y ** 3 + t[13] * y ** 4)
 
 
 def get_function_infos(diffeosWithTs, number_of_samples=None):
