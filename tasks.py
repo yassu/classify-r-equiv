@@ -8,6 +8,9 @@ from classify_r_equiv import (
 
 MAX_DEG = 10
 MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.01
+TRAIN_RATE = 0.8
+EPOCHS = 700
+N_HIDDEN = 200
 JSON_FILENAME = 'assets/input_function_datas.json'
 NUMBER_OF_SAMPLES = 10 ** 6
 
@@ -41,9 +44,19 @@ def update(
 
 
 @task
-def learn_and_test(ctx):
+def learn_and_test(
+        ctx,
+        train_rate=TRAIN_RATE,
+        epochs=EPOCHS,
+        n_hidden=N_HIDDEN,
+        json_filename=JSON_FILENAME,):
     """ 学習する """
-    _learn_and_test.main()
+    _learn_and_test.main(
+        train_rate=float(train_rate),
+        epochs=int(epochs),
+        n_hidden=int(n_hidden),
+        json_filename=str(json_filename)
+    )
 
 
 @task

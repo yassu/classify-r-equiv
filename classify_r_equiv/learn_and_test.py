@@ -16,7 +16,6 @@ def load_from_json(json_filename, train_size):
     print('Start to load json file')
     with open(json_filename) as f:
         json_datas = json.load(f)
-    print(len(json_datas))
     print('Finish to load json file')
 
     print('Start to compute data')
@@ -39,9 +38,8 @@ def prelu(x, alpha):
         + alpha * tf.minimum(tf.zeros(tf.shape(x)), x)
 
 
-def execute(X_train, X_test, Y_train, Y_test):
+def execute(X_train, X_test, Y_train, Y_test, epochs, n_hidden):
     n_in = len(X_train[0])
-    n_hidden = 200
     n_out = len(Y_train[0])
 
     # make model
@@ -80,7 +78,6 @@ def execute(X_train, X_test, Y_train, Y_test):
     '''
     モデル学習
     '''
-    epochs = 700
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
@@ -118,8 +115,14 @@ def execute(X_train, X_test, Y_train, Y_test):
     print('accuracy: ', accuracy_rate)
 
 
-def main():
-    json_filename = 'assets/input_function_datas.json'
+def main(
+    train_rate,
+    epochs,
+    n_hidden,
+    json_filename,
+    ):
     X_train, X_test, Y_train, Y_test =\
-        load_from_json(json_filename=json_filename, train_size=0.8)
-    execute(X_train, X_test, Y_train, Y_test)
+        load_from_json(json_filename=json_filename, train_size=train_rate)
+    execute(X_train, X_test, Y_train, Y_test,
+        epochs=epochs,
+        n_hidden=n_hidden)
