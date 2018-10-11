@@ -32,6 +32,7 @@ def update(
         max_var=MAX_VAR,
         step_var=STEP_VAR,
         number_of_samples=NUMBER_OF_SAMPLES,
+        difficulty=0,
         json_filename=JSON_FILENAME,):
     """ 入力のデータを作成/更新する """
     _update_data.main(
@@ -39,6 +40,7 @@ def update(
         min_var=float(min_var),
         max_var=float(max_var),
         step_var=float(step_var),
+        difficulty=int(difficulty),
         number_of_samples=number_of_samples,
         json_filename=json_filename,)
 
