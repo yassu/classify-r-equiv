@@ -7,7 +7,7 @@ import json
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
-from classify_r_equiv.const import SEED_FUNCTIONS
+from classify_r_equiv.const import get_seed_functions
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
@@ -28,7 +28,8 @@ def load_from_json(json_filename, train_size):
             ys = np.append(ys, json_data['function_type'])
             pbar.update(1)
     xs = np.asarray(xs)
-    ys = np.eye(len(SEED_FUNCTIONS))[ys.astype(int)]
+    seed_functions = get_seed_functions(0)
+    ys = np.eye(len(seed_functions))[ys.astype(int)]
     print('Finish to compute data')
     return train_test_split(xs, ys, train_size=train_size)
 

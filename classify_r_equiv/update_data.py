@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import json
-from classify_r_equiv.const import SEED_FUNCTIONS
+from classify_r_equiv.const import get_seed_functions
 from tqdm import tqdm
 from sympy import *
 import random
@@ -46,8 +46,9 @@ def get_diffeo(t):
 def get_function_infos(diffeosWithTs, number_of_samples):
     yielded_keys = list()
     cnt = 0
+    seed_functions = get_seed_functions(0)
     while True:
-        seed_function = random.choice(SEED_FUNCTIONS)
+        seed_function = random.choice(seed_functions)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
         if (t1[0] * t2[1] - t1[1] * t2[0] == 0):
