@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
 
-def load_from_json(json_filename, train_size):
+def load_from_json(json_filename, difficulty, train_size):
     print('Start to load json file')
     with open(json_filename) as f:
         json_datas = json.load(f)
@@ -28,7 +28,7 @@ def load_from_json(json_filename, train_size):
             ys = np.append(ys, json_data['function_type'])
             pbar.update(1)
     xs = np.asarray(xs)
-    seed_functions = get_seed_functions(0)
+    seed_functions = get_seed_functions(difficulty)
     ys = np.eye(len(seed_functions))[ys.astype(int)]
     print('Finish to compute data')
     return train_test_split(xs, ys, train_size=train_size)
@@ -120,10 +120,14 @@ def main(
     train_rate,
     epochs,
     n_hidden,
+    difficulty,
     json_filename,
     ):
     X_train, X_test, Y_train, Y_test =\
-        load_from_json(json_filename=json_filename, train_size=train_rate)
+        load_from_json(
+            json_filename=json_filename,
+            difficulty=difficulty,
+            train_size=train_rate)
     execute(X_train, X_test, Y_train, Y_test,
         epochs=epochs,
         n_hidden=n_hidden)

@@ -51,12 +51,14 @@ def learn_and_test(
         train_rate=TRAIN_RATE,
         epochs=EPOCHS,
         n_hidden=N_HIDDEN,
+        difficulty=0,
         json_filename=JSON_FILENAME,):
     """ 学習する """
     _learn_and_test.main(
         train_rate=float(train_rate),
         epochs=int(epochs),
         n_hidden=int(n_hidden),
+        difficulty=int(difficulty),
         json_filename=str(json_filename)
     )
 
