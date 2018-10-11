@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import json
-from classify_r_equiv.const import SEED_FUNCTIONS
+from classify_r_equiv.const import get_seed_functions
 from tqdm import tqdm
 from sympy import *
 import random
@@ -43,11 +43,12 @@ def get_diffeo(t):
                 t[12] * x * y ** 3 + t[13] * y ** 4)
 
 
-def get_function_infos(diffeosWithTs, number_of_samples):
+def get_function_infos(diffeosWithTs, difficulty, number_of_samples):
     yielded_keys = list()
     cnt = 0
+    seed_functions = get_seed_functions(difficulty)
     while True:
-        seed_function = random.choice(SEED_FUNCTIONS)
+        seed_function = random.choice(seed_functions)
         phi1, t1 = random.choice(diffeosWithTs)
         phi2, t2 = random.choice(diffeosWithTs)
         if (t1[0] * t2[1] - t1[1] * t2[0] == 0):
@@ -68,6 +69,7 @@ def update_data(
         min_var,
         max_var,
         step_var,
+        difficulty,
         json_filename,
         number_of_samples,):
     coeff_keys = [
@@ -87,6 +89,7 @@ def update_data(
     datas = []
     function_infos = get_function_infos(
             list(zip(diffeos, ts)),
+            difficulty,
             number_of_samples)
     with tqdm(total=number_of_samples) as pbar:
         for function, (phi1, t1), (phi2, t2) in function_infos:
@@ -115,11 +118,13 @@ def main(
     max_var,
     step_var,
     json_filename,
+    difficulty,
     number_of_samples,):
     update_data(
         max_deg=max_deg,
         min_var=min_var,
         max_var=max_var,
         step_var=step_var,
+        difficulty=difficulty,
         number_of_samples=number_of_samples,
         json_filename=json_filename,)
