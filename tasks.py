@@ -9,7 +9,7 @@ from classify_r_equiv import (
 MAX_DEG = 10
 MIN_VAR, MAX_VAR, STEP_VAR = -100.0, 100.0, 0.01
 TRAIN_RATE = 0.8
-EPOCHS = 700
+EPOCHS = 10 ** 4
 N_HIDDEN = 200
 JSON_FILENAME = 'assets/input_function_datas.json'
 NUMBER_OF_SAMPLES = 10 ** 6
