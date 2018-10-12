@@ -45,7 +45,7 @@ def update(
         max_var=MAX_VAR,
         step_var=STEP_VAR,
         number_of_samples=NUMBER_OF_SAMPLES,
-        difficulty=0,
+        difficulty=DIFFICULTY,
         json_filename=JSON_FILENAME,):
     """ 入力のデータを作成/更新する """
     _update_data.main(
@@ -58,7 +58,20 @@ def update(
         json_filename=json_filename,)
 
 
-@task
+@task(
+    help={
+        'difficulty': 'difficulty of singularities 0, 1 or 2' +
+            default_str(DIFFICULTY),
+        'epochs': 'number of epochs' +
+            default_str(EPOCHS),
+        'json-filename': 'output data to json-filename' +
+            default_str(JSON_FILENAME),
+        'n-hidden': 'number of node of hidden layer' +
+            default_str(N_HIDDEN),
+        'train-rate': 'rate of number of train samples' +
+            default_str(TRAIN_RATE),
+    }
+)
 def learn_and_test(
         ctx,
         train_rate=TRAIN_RATE,
