@@ -23,20 +23,20 @@ def default_str(default_value):
 @task(
     help={
         'json-filename': 'output data to json-filename' +
-            default_str(JSON_FILENAME),
+        default_str(JSON_FILENAME),
         'number-of-samples': 'number of made samples' +
-            default_str(NUMBER_OF_SAMPLES),
+        default_str(NUMBER_OF_SAMPLES),
         'min-var': 'consider coefficient of function >= min-var' +
-            default_str(MIN_VAR),
+        default_str(MIN_VAR),
         'max-var': 'consider coefficient of function <= max-var' +
-            default_str(MAX_VAR),
+        default_str(MAX_VAR),
         'max-deg': 'consider degree of max <= max-deg' +
-            default_str(MAX_DEG),
+        default_str(MAX_DEG),
         'step-var': 'consider list from min-var to max-var by step-var step' +
-            default_str(STEP_VAR),
+        default_str(STEP_VAR),
         'difficulty': 'difficulty of singularities 0, 1 or 2' +
-            default_str(DIFFICULTY),
-        }
+        default_str(DIFFICULTY),
+    }
 )
 def update(
         ctx,
@@ -61,15 +61,15 @@ def update(
 @task(
     help={
         'difficulty': 'difficulty of singularities 0, 1 or 2' +
-            default_str(DIFFICULTY),
+        default_str(DIFFICULTY),
         'epochs': 'number of epochs' +
-            default_str(EPOCHS),
+        default_str(EPOCHS),
         'json-filename': 'output data to json-filename' +
-            default_str(JSON_FILENAME),
+        default_str(JSON_FILENAME),
         'n-hidden': 'number of node of hidden layer' +
-            default_str(N_HIDDEN),
+        default_str(N_HIDDEN),
         'train-rate': 'rate of number of train samples' +
-            default_str(TRAIN_RATE),
+        default_str(TRAIN_RATE),
     }
 )
 def learn_and_test(

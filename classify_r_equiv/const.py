@@ -26,12 +26,14 @@ _SEED_FUNCTIONS = {
     )
 }
 
+
 def get_seed_functions(difficulty):
     return list(chain.from_iterable(
         Linq(_SEED_FUNCTIONS.items())
-            .where(lambda t: t[0] <= difficulty)
-            .select(lambda t: t[1])
+        .where(lambda t: t[0] <= difficulty)
+        .select(lambda t: t[1])
     ))
+
 
 if __name__ == '__main__':
     print(get_seed_functions(1))

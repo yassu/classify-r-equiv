@@ -6,7 +6,6 @@ from classify_r_equiv.const import get_seed_functions
 from tqdm import tqdm
 from sympy import *
 import random
-from itertools import product
 
 x, y = symbols("x y")
 
@@ -26,6 +25,7 @@ class MyEncoder(json.JSONEncoder):
 def near_eq(f1, f2):
     return f1 - f2 < 0.1 ** 3
 
+
 def get_ts(numbers, number_of_samples):
     tmat = list()
     for i in range(14):
@@ -34,13 +34,14 @@ def get_ts(numbers, number_of_samples):
         tmat.append(ts)
     return zip(*tmat)
 
+
 def get_diffeo(t):
-        return t[0] * x + t[1] * y + (
-            t[2] * x * x + t[3] * x * y + t[4] * y * y +
-            t[5] * x ** 3 + t[6] * x ** 2 * y + t[7] * x * y ** 2
-                + t[8] * y ** 3 +
-            t[9] * x ** 4 + t[10] * x ** 3 * y + t[11] * x ** 2 * y ** 2 +
-                t[12] * x * y ** 3 + t[13] * y ** 4)
+    return t[0] * x + t[1] * y + (
+        t[2] * x * x + t[3] * x * y + t[4] * y * y +
+        t[5] * x ** 3 + t[6] * x ** 2 * y + t[7] * x * y ** 2
+        + t[8] * y ** 3 +
+        t[9] * x ** 4 + t[10] * x ** 3 * y + t[11] * x ** 2 * y ** 2 +
+        t[12] * x * y ** 3 + t[13] * y ** 4)
 
 
 def get_function_infos(diffeosWithTs, difficulty, number_of_samples):
@@ -88,9 +89,9 @@ def update_data(
     print('Compute datas')
     datas = []
     function_infos = get_function_infos(
-            list(zip(diffeos, ts)),
-            difficulty,
-            number_of_samples)
+        list(zip(diffeos, ts)),
+        difficulty,
+        number_of_samples)
     with tqdm(total=number_of_samples) as pbar:
         for function, (phi1, t1), (phi2, t2) in function_infos:
             func = function[0]
@@ -113,13 +114,13 @@ def update_data(
 
 
 def main(
-    max_deg,
-    min_var,
-    max_var,
-    step_var,
-    json_filename,
-    difficulty,
-    number_of_samples,):
+        max_deg,
+        min_var,
+        max_var,
+        step_var,
+        json_filename,
+        difficulty,
+        number_of_samples,):
     update_data(
         max_deg=max_deg,
         min_var=min_var,

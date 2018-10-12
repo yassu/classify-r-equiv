@@ -6,7 +6,6 @@ from tqdm import tqdm
 import json
 import numpy as np
 import tensorflow as tf
-from tqdm import tqdm
 from classify_r_equiv.const import get_seed_functions
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
@@ -62,7 +61,6 @@ def execute(X_train, X_test, Y_train, Y_test, epochs, n_hidden):
 
     W3 = tf.Variable(tf.truncated_normal([n_hidden, n_hidden], stddev=0.01))
     b3 = tf.Variable(tf.zeros([n_hidden]))
-    alpha3 = tf.Variable(tf.zeros([n_hidden]))
     h3 = tf.nn.tanh(tf.matmul(h2, W3) + b3)
 
     # 隠れ層 - 出力層
@@ -71,7 +69,8 @@ def execute(X_train, X_test, Y_train, Y_test, epochs, n_hidden):
     y = tf.nn.softmax(tf.matmul(h3, W4) + b4)
 
     cross_entropy = tf.reduce_mean(-tf.reduce_sum(t * tf.log(y), axis=1))
-    train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
+    train_step = tf.train.GradientDescentOptimizer(
+        0.01).minimize(cross_entropy)
 
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(t, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -122,12 +121,12 @@ def main(
     n_hidden,
     difficulty,
     json_filename,
-    ):
+):
     X_train, X_test, Y_train, Y_test =\
         load_from_json(
             json_filename=json_filename,
             difficulty=difficulty,
             train_size=train_rate)
     execute(X_train, X_test, Y_train, Y_test,
-        epochs=epochs,
-        n_hidden=n_hidden)
+            epochs=epochs,
+            n_hidden=n_hidden)
