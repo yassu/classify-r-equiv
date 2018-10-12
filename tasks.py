@@ -12,17 +12,30 @@ TRAIN_RATE = 0.8
 EPOCHS = 10 ** 4
 N_HIDDEN = 200
 JSON_FILENAME = 'assets/input_function_datas.json'
+DIFFICULTY = 0
 NUMBER_OF_SAMPLES = 10 ** 6
+
+
+def default_str(default_value):
+    return f' Default: {default_value}'
 
 
 @task(
     help={
-        'json-filename': 'output data to json-filename',
-        'number-of-samples': 'number of made samples',
-        'min-var': 'consider coefficient of function >= min-var',
-        'max-var': 'consider coefficient of function <= max-var',
-        'max-deg': 'consider degree of max <= max-deg',
-        'step-var': 'consider list from min-var to max-var by step-var step',
+        'json-filename': 'output data to json-filename' +
+            default_str(JSON_FILENAME),
+        'number-of-samples': 'number of made samples' +
+            default_str(NUMBER_OF_SAMPLES),
+        'min-var': 'consider coefficient of function >= min-var' +
+            default_str(MIN_VAR),
+        'max-var': 'consider coefficient of function <= max-var' +
+            default_str(MAX_VAR),
+        'max-deg': 'consider degree of max <= max-deg' +
+            default_str(MAX_DEG),
+        'step-var': 'consider list from min-var to max-var by step-var step' +
+            default_str(STEP_VAR),
+        'difficulty': 'difficulty of singularities 0, 1 or 2' +
+            default_str(DIFFICULTY),
         }
 )
 def update(
