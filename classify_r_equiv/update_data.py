@@ -99,9 +99,6 @@ def update_data(
             datas.append({
                 "seed_function": str(func(x, y)),
                 "function_type": function[2],
-                "t1": t1,
-                "t2": t2,
-                "function": str(updated_func),
                 "function_coeffs": [
                     float(updated_func.coeff(coeff_key).subs([(x, 0), (y, 0)]))
                     for coeff_key in coeff_keys],
